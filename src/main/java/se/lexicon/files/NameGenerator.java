@@ -124,7 +124,7 @@ public class NameGenerator
     private static void scannerReadsLastNamesFile()
     {
         Scanner scanFile = null;
-        Path filePath = Paths.get(".txt");
+        Path filePath = Paths.get("lastnames.txt");
         List<String> lastNamesList = new ArrayList<>();
 
         try {
@@ -145,8 +145,29 @@ public class NameGenerator
             }
             catch (NullPointerException ee)
             {
-                System.out.println(ee);
+                System.out.println("was unable to close the file: " + filePath);
             }
+        }
+
+        lastNamesList.forEach(System.out::println);
+    }
+
+    private static void scannerReadsLastNamesFileTryWithResource()
+    {
+
+        Path filePath = Paths.get("lastnames.txt");
+        List<String> lastNamesList = new ArrayList<>();
+
+        try (Scanner scanFile = new Scanner(filePath)) {
+
+            while (scanFile.hasNext())// is there a line to read? end of the file?
+            {
+                lastNamesList.add(scanFile.nextLine());// read line in file
+            }
+        }
+        catch (IOException e)// no file? not allowed to read?
+        {
+            System.out.println(e);
         }
 
         lastNamesList.forEach(System.out::println);
